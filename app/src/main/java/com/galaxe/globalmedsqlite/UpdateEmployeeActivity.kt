@@ -73,9 +73,20 @@ class UpdateEmployeeActivity: AppCompatActivity() {
             "Required Field"
         } else null
 
-//        if (isValid) {
-//
-//        }
+        if (isValid) {
+            val updateName :String = etEmpName.text.toString()
+            val updateDOB :Long = myCalendar.timeInMillis
+            val updateDesignation :String = etDesignation.text.toString()
+
+            val updatedEmployee = Employee(empId!!, updateName, updateDOB, updateDesignation)
+
+            DataManager.updateEmployee(databaseHelper,updatedEmployee)
+            setResult(Activity.RESULT_OK, Intent())
+            Toast.makeText(applicationContext, "Employee Updated", Toast.LENGTH_SHORT).show()
+
+            finish()
+
+        }
     }
 
     private fun setUpCalender(date: DatePickerDialog.OnDateSetListener) {

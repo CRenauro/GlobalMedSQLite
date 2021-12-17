@@ -1,5 +1,8 @@
 package com.galaxe.globalmedsqlite
 
+import android.content.ContentValues
+import android.database.sqlite.SQLiteDatabase
+
 object DataManager {
 
     fun fetchAllEmployees(databaseHelper: DatabaseHelper) : ArrayList<Employee> {
@@ -81,6 +84,21 @@ object DataManager {
 
         cursor.close()
         return employee
+
+    }
+
+    fun updateEmployee(databaseHelper: DatabaseHelper, employee: Employee) {
+        val db:SQLiteDatabase = databaseHelper.writableDatabase
+        val values = ContentValues()
+        values.put(GlobalMedDBContract.EmployeeEntry.COLUMN_NAME, employee.name)
+        values.put(GlobalMedDBContract.EmployeeEntry.COLUMN_DESIGNATION, employee.designation)
+        values.put(GlobalMedDBContract.EmployeeEntry.COLUMN_DOB, employee.dob)
+
+        val selection = GlobalMedDBContract.EmployeeEntry.COLUMN_ID + " LIKE ? "
+
+        val selectionArgs = arrayOf(employee.id)
+
+        db.update(GlobalMedDBContract.EmployeeEntry.TABLE_NAME, values,selection,selectionArgs)
 
     }
 }
